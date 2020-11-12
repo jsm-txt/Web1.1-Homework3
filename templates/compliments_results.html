@@ -6,8 +6,14 @@ Compliments Results
 
 {% block content %}
 
+
 <!-- Your HTML code goes here! -->
 
+{% if answer == 'no' %}
+    {{name}}, do you not like compliments?
 
+{% else %}
+    {{name}}'s compliments are {{compliments}}
+{% endif %}
 
 {% endblock %}
