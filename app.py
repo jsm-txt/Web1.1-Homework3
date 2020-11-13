@@ -83,12 +83,12 @@ def animal_facts():
     animal_list = animal_to_fact.keys()
 
     animal = request.args.get('animal')
-    print(animal)
+    
     if animal: 
         fact = animal_to_fact[animal]
     else:
         fact = None
-    print(fact)
+   
 
     context = {
         # TODO: Enter your context variables here for:
@@ -148,7 +148,7 @@ def image_filter():
         # TODO: Get the user's chosen filter type (whichever one they chose in the form) and save
         # as a variable
         image_filter= request.form.get('filter')
-        image_value= filter_types_dict[image_filter]
+        
         print(image_filter)
 
         # Get the image file submitted by the user
@@ -194,31 +194,47 @@ pp = PrettyPrinter(indent=4)
 @app.route('/gif_search', methods=['GET', 'POST'])
 def gif_search():
     """Show a form to search for GIFs and show resulting GIFs from Tenor API."""
+    quantity = 0
+    gifs = 0
     if request.method == 'POST':
         # TODO: Get the search query & number of GIFs requested by the user, store each as a 
         # variable
+
+        search = request.form.get('search_query')
+        quantity = int(request.form.get('quantity'))
+
 
         response = requests.get(
             TENOR_URL,
             {
                 # TODO: Add in key-value pairs for:
                 # - 'q': the search query
+                'q': search,
                 # - 'key': the API key (defined above)
+                'key': API_KEY,
                 # - 'limit': the number of GIFs requested
+                'limit': quantity
             })
 
         gifs = json.loads(response.content).get('results')
-
+        
         context = {
-            'gifs': gifs
+            'gifs': gifs,
+            'quantity': quantity
         }
 
-        # Uncomment me to see the result JSON!
-        # pp.pprint(gifs)
-
+        #Uncomment me to see the result JSON!
+        pp.pprint(gifs)
+        print("-----------------")
+        # print(gifs[quantity - 1]['media'][0]['gif']['url'])
         return render_template('gif_search.html', **context)
     else:
-        return render_template('gif_search.html')
+        context = {
+            'gifs': gifs,
+            'quantity': quantity
+        }
+
+        return render_template('gif_search.html', **context)
 
 if __name__ == '__main__':
     app.config['ENV'] = 'development'

@@ -13,14 +13,12 @@ Gif Search
         <p>
             <label>
                 Type in a search query to search for GIFs:
-
                 <input type="text" name="search_query">
             </label>
         </p>
         <p>
             <label>
                 How many GIFs do you want?
-
                 <input type="number" name="quantity" min="1" max="10" value="5">
             </label>
         </p>
@@ -34,13 +32,17 @@ Gif Search
     <p>
         Here are your GIFs:
     </p>
+    {% if quantity > 0 %}
+    
     <!-- TODO: Use a for loop to show each GIF separately in an img tag (and place each one in a 
         separate p tag to show on separate lines). You can get the GIF's image URL by using: 
         gif['media'][0]['gif']['url'] -->
 
+    {% for n in range(quantity) %}
     <p>
-        <img src="https://your/gif/url/goes/here" alt="GIF">
+        <img src="{{gifs[n -1]['media'][0]['gif']['url']}}" alt="GIF">
     </p>
+    {% endfor %}
+    {% endif %}
 </section>
-
 {% endblock %}
